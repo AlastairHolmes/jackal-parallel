@@ -1,0 +1,18 @@
+bin/
+build/
+ext/
+	Any external src dependencies
+meta/
+	policy/
+	licenses/
+	version/
+		VERSION
+		bump-version.py
+	cmake/ (For modules)
+		macros/ (For macros/functions)
+src/
+	<targets>/
+test/
+	<test-targets>/
+LICENSE
+README.md
