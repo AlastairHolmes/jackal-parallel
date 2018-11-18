@@ -1,6 +1,3 @@
 [submodule "ext/common-cmake"]
 	path = ext/common-cmake
 	url = https://github.com/AlastairHolmes/common-cmake.git
-[submodule "ext/concurrentqueue"]
-	path = ext/concurrentqueue
-	url = https://github.com/cameron314/concurrentqueue.git
