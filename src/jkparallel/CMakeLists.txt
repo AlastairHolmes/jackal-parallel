@@ -25,7 +25,6 @@ target_compile_features(JKParallel INTERFACE
 		INSTALL_DESTINATION "include/jkparallel"
 		FILES
 			"${CMAKE_CURRENT_LIST_DIR}/queue.h"
-			"${CMAKE_CURRENT_LIST_DIR}/fix_queue.h"
 			"${CMAKE_CURRENT_LIST_DIR}/sources.h"
 			"${CMAKE_CURRENT_LIST_DIR}/sinks.h")
 			
