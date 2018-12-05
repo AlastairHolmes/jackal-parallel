@@ -200,6 +200,16 @@ namespace jkparallel
 			return complete;
 		}
 
+		sinkType& get_internal_sink()
+		{
+			return m_sink;
+		}
+
+		const sinkType& get_internal_sink() const
+		{
+			return m_sink;
+		}
+
 	private:
 
 		sinkType m_sink;

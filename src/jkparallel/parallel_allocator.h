@@ -4,6 +4,8 @@
 #include <jkparallel\parallel_cache_allocator.h>
 #include <jkutil\bucket_allocator.h>
 #include <jkutil\allocator_reference.h>
+#include <jkutil\cache_allocator.h>
+#include <functional>
 #include <list>
 
 namespace jkparallel
@@ -57,7 +59,7 @@ namespace jkparallel
 
 	//};
 
-	using parallel_allocator_interface = jkutil::bucket_allocator<parallel_cache_allocator_interface_reference<>>;
+	using parallel_allocator_interface = jkutil::bucket_allocator<jkutil::cache_allocator<parallel_cache_allocator_interface_reference<>>>;
 
 	using parallel_allocator_interface_reference = jkutil::opaque_allocator_immutable_reference<parallel_allocator_interface>;
 
@@ -66,7 +68,12 @@ namespace jkparallel
 
 	public:
 
-		parallel_allocator(std::size_t p_buckets = 0, std::size_t p_smallest_bucket = 1, std::size_t p_bucket_power_step = 1);
+		parallel_allocator(
+			std::function<std::size_t(std::size_t, std::size_t)> p_shared_cache_size_callable,
+			std::function<std::size_t(std::size_t, std::size_t)> p_private_cache_size_callable,
+			std::size_t p_buckets,
+			std::size_t p_smallest_bucket,
+			std::size_t p_bucket_power_step = 1);
 
 		parallel_allocator(const parallel_allocator&) = delete;
 		parallel_allocator(parallel_allocator&&) = delete;
@@ -80,6 +87,8 @@ namespace jkparallel
 
 	private:
 
+		std::function<std::size_t(std::size_t, std::size_t)> m_shared_cache_size_callable;
+		std::function<std::size_t(std::size_t, std::size_t)> m_private_cache_size_callable;
 		const std::size_t m_buckets;
 		const std::size_t m_minimum_bucket_size;
 		const std::size_t m_bucket_power_step;

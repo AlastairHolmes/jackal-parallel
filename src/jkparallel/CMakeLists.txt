@@ -20,7 +20,16 @@ target_compile_features(JKParallel INTERFACE
 # Header Files
 
 	AddSourcesToTarget(JKParallel
-		GROUP "Header Files\\Parallel"
+		GROUP "Header Files\\Utilities"
+		SCOPE PRIVATE
+		INSTALL_DESTINATION "include/jkparallel"
+		FILES
+			"${CMAKE_CURRENT_LIST_DIR}/spinlock.h"
+			"${CMAKE_CURRENT_LIST_DIR}/thread.h"
+			"${CMAKE_CURRENT_LIST_DIR}/conditions.h")
+
+	AddSourcesToTarget(JKParallel
+		GROUP "Header Files\\Queues"
 		SCOPE PRIVATE
 		INSTALL_DESTINATION "include/jkparallel"
 		FILES
@@ -29,19 +38,52 @@ target_compile_features(JKParallel INTERFACE
 			"${CMAKE_CURRENT_LIST_DIR}/sinks.h"
 			"${CMAKE_CURRENT_LIST_DIR}/queues.h"
 			"${CMAKE_CURRENT_LIST_DIR}/blocking_queue.h"
-			"${CMAKE_CURRENT_LIST_DIR}/async.h"
-			"${CMAKE_CURRENT_LIST_DIR}/spinlock.h"
 			"${CMAKE_CURRENT_LIST_DIR}/spmc_queue.h"
-			"${CMAKE_CURRENT_LIST_DIR}/mpsc_queue.h"
+			"${CMAKE_CURRENT_LIST_DIR}/mpsc_queue.h")
+
+	AddSourcesToTarget(JKParallel
+		GROUP "Header Files\\Async"
+		SCOPE PRIVATE
+		INSTALL_DESTINATION "include/jkparallel"
+		FILES
+			"${CMAKE_CURRENT_LIST_DIR}/async.h")
+			
+	AddSourcesToTarget(JKParallel
+		GROUP "Header Files\\Allocator"
+		SCOPE PRIVATE
+		INSTALL_DESTINATION "include/jkparallel"
+		FILES
 			"${CMAKE_CURRENT_LIST_DIR}/parallel_allocator.h"
 			"${CMAKE_CURRENT_LIST_DIR}/parallel_cache_allocator.h")
-			
+
+	AddSourcesToTarget(JKParallel
+		GROUP "Header Files\\Tasks"
+		SCOPE PRIVATE
+		INSTALL_DESTINATION "include/jkparallel"
+		FILES
+			"${CMAKE_CURRENT_LIST_DIR}/task_processor.h"
+			"${CMAKE_CURRENT_LIST_DIR}/tasK_system.h"
+			"${CMAKE_CURRENT_LIST_DIR}/dependent.h")
+
 # Source Files
 
 	AddSourcesToTarget(JKParallel
-		GROUP "Source Files\\Parallel"
+		GROUP "Source Files\\Utilities"
+		SCOPE PRIVATE
+		FILES
+			"${CMAKE_CURRENT_LIST_DIR}/spinlock.cpp"
+			"${CMAKE_CURRENT_LIST_DIR}/thread.cpp"
+			"${CMAKE_CURRENT_LIST_DIR}/conditions.cpp")
+			
+	AddSourcesToTarget(JKParallel
+		GROUP "Source Files\\Allocator"
 		SCOPE PRIVATE
 		FILES
 			"${CMAKE_CURRENT_LIST_DIR}/parallel_cache_allocator.cpp"
-			"${CMAKE_CURRENT_LIST_DIR}/spinlock.cpp"
 			"${CMAKE_CURRENT_LIST_DIR}/parallel_allocator.cpp")
+
+	AddSourcesToTarget(JKParallel
+		GROUP "Source Files\\Tasks"
+		SCOPE PRIVATE
+		FILES
+			"${CMAKE_CURRENT_LIST_DIR}/task_system.cpp")
