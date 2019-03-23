@@ -21,6 +21,9 @@ add_subdirectory("${CMAKE_SOURCE_DIR}/meta/doxy")
 # Main Library
 add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/src/jkparallel")
 
+# Tests
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/test/jkparallel_tests")
+
 # Installs the project's targets
 SetupExport("JKParallel")
 InstallExport("JKParallel"

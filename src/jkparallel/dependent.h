@@ -2,7 +2,6 @@
 #define JKPARALLEL_DEPENDENT_H
 
 #include <jkparallel\task_system.h>
-#include <jkutil\memory.h>
 #include <vector>
 
 namespace jkparallel
@@ -42,8 +41,8 @@ namespace jkparallel
 
 		node(std::size_t p_initial_dependencies);
 
-		void prepend(dependent* p_dependent);
-		void notify_on_end(notifiable* p_notifiable);
+		void prepend(dependent& p_dependent);
+		void notify_on_end(notifiable& p_notifiable);
 
 	protected:
 

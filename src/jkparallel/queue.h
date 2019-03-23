@@ -103,7 +103,7 @@ namespace jkparallel
 
 		void push_operation(sink_element_type&& p_element);
 		template <class inputIteratorType>
-		void push_operation(inputIteratorType p_begin, inputIteratorType p_end, size_t p_distance);
+		void push_operation(inputIteratorType p_begin, inputIteratorType p_end, std::size_t p_distance);
 
 		std::optional<source_element_type> try_steal();
 		std::optional<source_element_type> pop_operation();
@@ -111,7 +111,7 @@ namespace jkparallel
 		void expand(queue_index_t p_size);
 		void expand(queue_index_t p_size, elementType&& p_pushed_element);
 		template <class inputIteratorType>
-		void expand(queue_index_t p_size, inputIteratorType p_begin, inputIteratorType p_end, size_t p_distance);
+		void expand(queue_index_t p_size, inputIteratorType p_begin, inputIteratorType p_end, std::size_t p_distance);
 		void expand_operation(queue_index_t p_size);
 
 		void copy_buffer(elementType* p_destination, queue_index_t p_src_begin, queue_index_t p_src_end);
@@ -199,7 +199,7 @@ namespace jkparallel
 	{
 		using std::distance;
 
-		const size_t count = distance(p_begin, p_end);
+		const std::size_t count = distance(p_begin, p_end);
 
 		bool has_space = true;
 
@@ -254,7 +254,7 @@ namespace jkparallel
 	{
 		using std::distance;
 
-		const size_t count = distance(p_begin, p_end);
+		const std::size_t count = distance(p_begin, p_end);
 
 		if (count != 0)
 		{
@@ -266,10 +266,10 @@ namespace jkparallel
 			}
 			else if (m_size < m_maximum_size)
 			{
-				queue_index_t new_size = jkutil::ceil_pow2(m_size + count);
+				queue_index_t new_size = jkutil::ceil_pow2(m_size + static_cast<queue_index_t>(count));
 				if (new_size <= m_maximum_size)
 				{
-					expand(jkutil::ceil_pow2(m_size + count), p_begin, p_end, count);
+					expand(jkutil::ceil_pow2(m_size + static_cast<queue_index_t>(count)), p_begin, p_end, count);
 				}
 				else
 				{
@@ -318,14 +318,14 @@ namespace jkparallel
 
 	template<class elementType, class expansionStdAllocatorType>
 	template<class inputIteratorType>
-	inline void queue_interface<elementType, expansionStdAllocatorType>::push_operation(inputIteratorType p_begin, inputIteratorType p_end, size_t p_distance)
+	inline void queue_interface<elementType, expansionStdAllocatorType>::push_operation(inputIteratorType p_begin, inputIteratorType p_end, std::size_t p_distance)
 	{
 		queue_index_t buffer_position = m_local_bottom;
 		for (inputIteratorType i = p_begin; i != p_end; ++i, ++buffer_position)
 		{
 			m_current_buffer[buffer_position & m_mask] = *i;
 		}
-		m_local_bottom += p_distance;
+		m_local_bottom += static_cast<queue_index_t>(p_distance);
 		m_atomic_bottom.store(m_local_bottom, std::memory_order_release);
 	}
 
@@ -423,10 +423,10 @@ namespace jkparallel
 
 	template<class elementType, class expansionStdAllocatorType>
 	template<class inputIteratorType>
-	inline void queue_interface<elementType, expansionStdAllocatorType>::expand(queue_index_t p_size, inputIteratorType p_begin, inputIteratorType p_end, size_t p_distance)
+	inline void queue_interface<elementType, expansionStdAllocatorType>::expand(queue_index_t p_size, inputIteratorType p_begin, inputIteratorType p_end, std::size_t p_distance)
 	{
 		expand_operation(p_size);
-		push_operation(p_begin, p_end, p_count);
+		push_operation(p_begin, p_end, p_distance);
 	}
 
 	template<class elementType, class expansionStdAllocatorType>

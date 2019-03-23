@@ -1,35 +1,30 @@
 #include <jkparallel\task_system.h>
+#include <jkutil\scoped_guard.h>
 
 namespace jkparallel
 {
 
 	task_system_interface::task_system_interface(const queue_interface_reference<task*>& p_interface_reference)
-		: m_interface(queue_interface_reference<task*>(p_interface_reference))
+		: simple_sink_stager<queue_interface_reference<task*>>(queue_interface_reference<task*>(p_interface_reference))
 	{
-	}
-
-	bool task_system_interface::try_push(task*&& p_element)
-	{
-		return m_interface.try_push(std::move(p_element));
-	}
-
-	void task_system_interface::push(task*&& p_element)
-	{
-		m_interface.push(std::move(p_element));
 	}
 
 	void task_system_interface::try_run_task()
 	{
-		auto task = m_interface.get_internal_sink().try_pop();
+		auto task = get_internal_sink().try_pop();
 		if (task.has_value())
 		{
+			jkutil::make_scoped_guard([this]()
+			{
+				finalize_push();
+			});
 			task.value()->operator()(*this);
 		}
 	}
 
 	void task_system_interface::flush()
 	{
-		m_interface.get_internal_sink().flush();
+		get_internal_sink().flush();
 	}
 
 	task_system::task_system()

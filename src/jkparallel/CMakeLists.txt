@@ -2,6 +2,8 @@
 AddLibrary(JKParallel STATIC)
 AddTargetToGroup(JKParallel JKParallel)
 
+set_target_properties(JKParallel PROPERTIES DEBUG_POSTFIX "-d")
+
 install(TARGETS JKParallel EXPORT JKParallel
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
@@ -61,8 +63,8 @@ target_compile_features(JKParallel INTERFACE
 		SCOPE PRIVATE
 		INSTALL_DESTINATION "include/jkparallel"
 		FILES
-			"${CMAKE_CURRENT_LIST_DIR}/task_processor.h"
-			"${CMAKE_CURRENT_LIST_DIR}/tasK_system.h"
+			"${CMAKE_CURRENT_LIST_DIR}/task_graph.h"
+			"${CMAKE_CURRENT_LIST_DIR}/task_system.h"
 			"${CMAKE_CURRENT_LIST_DIR}/dependent.h")
 
 # Source Files
@@ -86,4 +88,6 @@ target_compile_features(JKParallel INTERFACE
 		GROUP "Source Files\\Tasks"
 		SCOPE PRIVATE
 		FILES
-			"${CMAKE_CURRENT_LIST_DIR}/task_system.cpp")
+			"${CMAKE_CURRENT_LIST_DIR}/task_system.cpp"
+			"${CMAKE_CURRENT_LIST_DIR}/dependent.cpp"
+			"${CMAKE_CURRENT_LIST_DIR}/task_graph.cpp")
